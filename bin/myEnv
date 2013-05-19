@@ -24,11 +24,13 @@ public_env = [
     'export PS1="\[\e[0;31m\]\u\[\e[m\] \[\e[33;36m\]\w\[\e[m\] \[\e[0;31m\]#\[\e[m\]\[\e[0m\]" #root'
 ]
 
+all_env = {
+    'public_env': public_env,
+    'home_env': home_env,
+    'work_env': work_env
+}
 txtgrn = '\033[40;7;35m %s \033[0m'
 
-print txtgrn%'HOME'
-print '\n'.join(home_env)
-print txtgrn%'WORK'
-print '\n'.join(work_env)
-
-PS1='\[\e[0;32m\]\u\[\e[m\] \[\e[33;36m\]\w\[\e[m\] \[\e[1;32m\]$\[\e[m\] \[\e[0m\]'
+for env in all_env.keys():
+    print txtgrn % env
+    print '\n'.join(all_env[env])
