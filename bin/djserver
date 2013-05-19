@@ -1,0 +1,65 @@
+#!/bin/bash
+source bashtools
+
+ip_addr=0.0.0.0
+[ x"$#" = x2 ] && port=$2 || port=8000
+
+log_file=djserver.log
+
+checkDjangServer(){
+    sleep 0.1
+    if ps axu|grep -q "python2 [m]anage.py runserver $ip_addr:$port"; then
+       return 0
+    fi
+    return 1
+}
+startDjangoServer(){
+    echo -en "starting djserver at $ip_addr:$port :\t"
+    checkDjangServer && output warn "already started" && return 1
+    python2 manage.py runserver $ip_addr:$port &> $log_file &
+    if checkDjangServer; then
+        output success OK
+    else
+        output error FAIL
+        return 1
+    fi
+}
+stopDjangoServer(){
+    echo -en "stopping djserver at $ip_addr:$port :\t"
+    if ! checkDjangServer; then
+        output warn "already stopped"
+        return 1
+    fi
+    ps axu|grep "python2 [m]anage.py runserver $ip_addr:$port"|awk '{print $2}'|xargs kill -9
+    if checkDjangServer; then
+        output error FAIL
+        exit 1
+    else
+        output success OK
+    fi
+}
+case $1 in
+    "start")
+    startDjangoServer
+    ;;
+    "stop")
+    stopDjangoServer
+    ;;
+    "restart")
+    stopDjangoServer
+    startDjangoServer
+    ;;
+    "status")
+    echo -en "state of djserver at $ip_addr:$port :\t"
+    if checkDjangServer; then
+        output success running
+    else
+        output warn stopped
+    fi
+    ;;
+    *)
+    echo "USAGE: $0 start|stop|restart|status [port]"
+    ;;
+esac
+
+

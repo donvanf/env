@@ -1,0 +1,21 @@
+#!/bin/bash
+[ x$# != x2 ] && echo "$0 [webpy|django] <start|stop|status|restart>" && exit
+
+APP=$1
+OPT=$2
+
+case $APP in
+    'webpy')
+        CMD='ipython blog.py 8000'
+        ARGS=' &> log &'
+        ;;
+    'django')
+        CMD='/usr/bin/python manage.py runserver 0.0.0.0:8000'
+        ARGS=' &> log &'
+        ;;
+    *)
+        echo "$0 [webpy|django] <start|stop|status|restart>"
+        ;;
+    esac
+
+appCtl.py -o $OPT "$CMD" "$ARGS"
