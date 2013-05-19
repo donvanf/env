@@ -21,7 +21,9 @@ work_env = [
 ]
 public_env = [
     'export PS1="\[\e[0;32m\]\u\[\e[m\] \[\e[33;36m\]\w\[\e[m\] \[\e[1;32m\]$\[\e[m\] \[\e[0m\]" #user',
-    'export PS1="\[\e[0;31m\]\u\[\e[m\] \[\e[33;36m\]\w\[\e[m\] \[\e[0;31m\]#\[\e[m\]\[\e[0m\]" #root'
+    'export PS1="\[\e[0;31m\]\u\[\e[m\] \[\e[33;36m\]\w\[\e[m\] \[\e[0;31m\]#\[\e[m\]\[\e[0m\]" #root',
+    'alias ls="ls --color=auto"',
+    'alias grep="grep --color=auto"'
 ]
 
 all_env = {
